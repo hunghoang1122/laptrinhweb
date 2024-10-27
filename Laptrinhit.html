@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đếm Ngược Sinh Nhật Hoàng Mạnh Hùng</title>
+    <style>
+        /* Thiết lập nền và phong cách tổng thể */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #fce4ec;
+            margin: 0;
+            overflow: hidden;
+            background-image: url('https://www.transparenttextures.com/patterns/purty-wood.png'); /* Nền gỗ mềm mại */
+        }
+        .countdown-container {
+            text-align: center;
+            font-size: 1.5em;
+            color: #4a148c;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .countdown-container h1 {
+            font-size: 2em;
+            margin-bottom: 0.5em;
+            color: #d81b60;
+        }
+
+        .countdown-container p {
+            margin: 0.3em 0;
+        }
+
+        /* Hiệu ứng bóng bay */
+        .balloon {
+            position: absolute;
+            border-radius: 50%;
+            width: 40px;
+            height: 50px;
+            background-color: #ff8a80;
+            opacity: 0.7;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: float 5s ease-in-out infinite;
+        }
+        .balloon:nth-child(odd) { background-color: #ff5252; }
+        .balloon:nth-child(even) { background-color: #ff4081; }
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 0.9; }
+            100% { transform: translateY(-100vh); opacity: 0.1; }
+        }
+
+        /* Trang trí emoji */
+        .decorations {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            font-size: 2em;
+        }
+
+        /* Pháo hoa */
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes explode {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(calc(var(--x) * 100px), calc(var(--y) * 100px)) scale(0.5); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Container chính với tiêu đề và đếm ngược -->
+    <div class="countdown-container">
+        <h1>Happy Birthday </h1>
+        <h1>Hoàng Mạnh Hùng</h1>
+        <p id="countdown"></p>
+        <p>Ngày sinh: 25/11/2009</p>
+        <p>Sinh nhật sắp tới: 25/11/2024</p>
+
+        <!-- Emoji bánh kem, nón sinh nhật, bóng bay -->
+        <div class="decorations">
+            🎂 🥳 🎈
+        </div>
+    </div>
+
+    <!-- JavaScript tạo bóng bay và pháo hoa ngẫu nhiên -->
+    <script>
+        function createBalloon() {
+            const balloon = document.createElement("div");
+            balloon.classList.add("balloon");
+            balloon.style.left = Math.random() * 100 + "vw";
+            balloon.style.animationDuration = (Math.random() * 2 + 3) + "s";
+            document.body.appendChild(balloon);
+
+            // Xóa bóng bay sau khi hoàn tất hoạt ảnh
+            setTimeout(() => {
+                balloon.remove();
+            }, 5000);
+        }
+
+        setInterval(createBalloon, 500);
+
+        function createFireworks() {
+            const colors = ["#ff5252", "#ff4081", "#ffd740", "#ffab40"];
+            for (let i = 0; i < 15; i++) {
+                const firework = document.createElement("div");
+                firework.classList.add("firework");
+                firework.style.setProperty("--x", Math.cos((i / 15) * Math.PI * 2));
+                firework.style.setProperty("--y", Math.sin((i / 15) * Math.PI * 2));
+                firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+                firework.style.left = Math.random() * 100 + "vw";
+                firework.style.top = Math.random() * 100 + "vh";
+                document.body.appendChild(firework);
+
+                // Xóa pháo hoa sau khi hoạt ảnh kết thúc
+                setTimeout(() => {
+                    firework.remove();
+                }, 1000);
+            }
+        }
+
+        setInterval(createFireworks, 2000);
+
+        // Bộ đếm sinh nhật
+        function countdown() {
+            const birthday = new Date("2024-11-25T00:00:00").getTime();
+            const now = new Date().getTime();
+            const timeRemaining = birthday - now;
+
+            if (timeRemaining > 0) {
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML = 
+                    `${days} Ngày ${hours} Giờ ${minutes} Phút ${seconds} Giây`;
+            } else {
+                document.getElementById("countdown").innerHTML = "Chúc Mừng Sinh Nhật<br>Hoàng Mạnh Hùng!";
+            }
+        }
+
+        setInterval(countdown, 1000);
+    </script>
+</body>
+</html>
